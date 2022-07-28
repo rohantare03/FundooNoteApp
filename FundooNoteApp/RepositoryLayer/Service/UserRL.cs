@@ -41,32 +41,7 @@ namespace RepositoryLayer.Service
             catch (Exception ex)
             {
                 throw;
-            }
-           
-        }
-        public UserLoginModel Login(UserLoginModel userLoginModel)
-        {
-            try
-            {
-                var LoginResult = fundooContext.UserTable.Where(user => user.Email == userLoginModel.Email && user.Password == userLoginModel.Password).FirstOrDefault();
-
-                if (LoginResult != null)
-                {
-                    userLoginModel.UserName = LoginResult.FirstName;
-                    userLoginModel.Email = LoginResult.Email;
-                    userLoginModel.Password = LoginResult.Password;
-                    return userLoginModel;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+            }          
         }
     }
 }
