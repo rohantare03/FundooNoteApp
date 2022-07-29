@@ -85,6 +85,29 @@ namespace FundooNoteApp.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPost]
+        [Route("ResetLink")]
+        public IActionResult ResetLink(string password, string confirmPassword)
+        {
+            try
+            {
+                var Email = User.FindFirst(ClaimTypes.Email).Value.ToString();
+                var result = iuserBL.ResetLink(Email, password, confirmPassword);
 
+                if (result != null)
+                {
+                    return Ok(new { success = true, message = "Password Reset Successful" });
+                }
+                else
+                {
+                    return BadRequest(new { success = false, message = "Password Reset Unsuccessful" });
+                }
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
     }
 }
