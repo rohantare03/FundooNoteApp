@@ -109,7 +109,7 @@ namespace FundooNoteApp
 
             app.UseRouting();
 
-            
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
