@@ -21,22 +21,22 @@ namespace RepositoryLayer.Service
             try
             {
                 NotesEntity notesEntity = new NotesEntity();
-                var result = fundooContext.UserTable.FirstOrDefault(e => e.UserId == userId);
-                if (result != null)
+                notesEntity.Title = notesModel.Title;
+                notesEntity.Description = notesModel.Description;
+                notesEntity.Reminder = notesModel.Reminder;
+                notesEntity.Color = notesModel.Color;
+                notesEntity.Image = notesModel.Image;
+                notesEntity.Archive = notesModel.Archive;
+                notesEntity.Pin = notesModel.Pin;
+                notesEntity.Trash = notesModel.Trash;
+                notesEntity.Created = notesModel.Created;
+                notesEntity.Edited = notesModel.Edited;
+                notesEntity.UserId = userId;
+
+                fundooContext.NotesTable.Add(notesEntity);
+                int result = fundooContext.SaveChanges();
+                if (result != 0)
                 {
-                    notesEntity.Title = notesModel.Title;
-                    notesEntity.Description = notesModel.Description;
-                    notesEntity.Reminder = notesModel.Reminder;
-                    notesEntity.Color = notesModel.Color;
-                    notesEntity.Image = notesModel.Image;
-                    notesEntity.Archive = notesModel.Archive;
-                    notesEntity.Pin = notesModel.Pin;
-                    notesEntity.Trash = notesModel.Trash;
-                    notesEntity.Created = notesModel.Created;
-                    notesEntity.Edited = notesModel.Edited;
-                    notesEntity.UserId = userId;
-                    fundooContext.NotesTable.Add(notesEntity);
-                    fundooContext.SaveChanges();
                     return notesEntity;
                 }
                 else
@@ -46,7 +46,6 @@ namespace RepositoryLayer.Service
             }
             catch (Exception)
             {
-
                 throw;
             }
         }

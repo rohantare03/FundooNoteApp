@@ -10,6 +10,7 @@ namespace FundooNoteApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class NotesController : ControllerBase
     {
         private readonly INotesBL iNotesBL;
@@ -18,7 +19,7 @@ namespace FundooNoteApp.Controllers
         {
             this.iNotesBL = iNotesBL;
         }
-        [Authorize]
+
         [HttpPost]
         [Route("Create")]
         public IActionResult CreateNote(NotesModel noteData)
