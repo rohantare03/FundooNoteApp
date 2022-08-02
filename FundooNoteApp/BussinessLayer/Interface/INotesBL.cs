@@ -10,5 +10,6 @@ namespace BussinessLayer.Interface
     {
         public NotesEntity AddNotes(NotesModel notesModel, long userId);
         public NotesEntity UpdateNote(NotesModel notesModel, long NoteId);
+        public NotesEntity DeleteNotes(long NoteId);
     }
 }
