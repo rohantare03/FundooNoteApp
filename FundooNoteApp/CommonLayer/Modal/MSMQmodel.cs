@@ -16,7 +16,6 @@ namespace CommonLayer.Modal
 
             if (!MessageQueue.Exists(messageQueue.Path))
             {
-                //Exists
                 MessageQueue.Create(messageQueue.Path);
             }
 
@@ -34,13 +33,24 @@ namespace CommonLayer.Modal
             string Token = msg.Body.ToString();
             string subject = "Fundoo Notes Reset Link";
             string Body = Token;
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress("firstuser311@gmail.com");
+            mail.To.Add("firstuser311@gmail.com");
+            mail.Subject = subject;
+            mail.IsBodyHtml = true;
+            string htmlBody;
+            htmlBody = "<body><p>Dear User,<br><br>" +
+                "Forgot your Password?<br>" +
+                "Click on the below link to reset your Password.<br></body>" + Token;
+
+            mail.Body = htmlBody;
             var SMTP = new SmtpClient("smtp.gmail.com")
             {
                 Port = 587,
                 Credentials = new NetworkCredential("firstuser311@gmail.com", "swoxpsvtboyndwcb"),
                 EnableSsl = true
             };
-            SMTP.Send("firstuser311@gmail.com", "User@1234", subject, Body);
+            SMTP.Send(mail);
             messageQueue.BeginReceive();
         }
     }
