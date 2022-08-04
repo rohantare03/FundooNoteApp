@@ -26,7 +26,7 @@ namespace FundooNoteApp.Controllers
         {
             try
             {
-                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userID").Value);
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(r => r.Type == "userID").Value);
                 var result = iNotesBL.AddNotes(noteData, userId);
                 if (result != null)
                 {
@@ -47,7 +47,7 @@ namespace FundooNoteApp.Controllers
         {
             try
             {
-                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "userID").Value);
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(r => r.Type == "userID").Value);
                 var result = iNotesBL.UpdateNote(notesModel, NoteId);
                 if (result != null)
                 {
@@ -70,7 +70,7 @@ namespace FundooNoteApp.Controllers
         {
             try
             {
-                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "userID").Value);
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(r => r.Type == "userID").Value);
                 var delete = iNotesBL.DeleteNotes(NoteId);
                 if (delete != null)
                 {
@@ -93,7 +93,7 @@ namespace FundooNoteApp.Controllers
         {
             try
             {
-                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(x => x.Type == "userID").Value);
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(r => r.Type == "userID").Value);
                 var result = iNotesBL.ReadNotes(userId);
                 if (result != null)
                 {
@@ -149,6 +149,30 @@ namespace FundooNoteApp.Controllers
                 else if (result == false)
                 {
                     return Ok(new { success = true, message = "Note UnArchived successfully" });
+                }
+                return BadRequest(new { success = false, message = "Cannot perform operation" });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPut]
+        [Route("Trash")]
+        public IActionResult Trash(long NoteID)
+        {
+            try
+            {
+                long userID = Convert.ToInt32(User.Claims.FirstOrDefault(r => r.Type == "userID").Value);
+                var result = iNotesBL.Trash(NoteID, userID);
+                if (result == true)
+                {
+                    return Ok(new { success = true, message = "Note Trashed successfully" });
+                }
+                else if (result == false)
+                {
+                    return Ok(new { success = true, message = "Note UnTrashed successfully" });
                 }
                 return BadRequest(new { success = false, message = "Cannot perform operation" });
             }
