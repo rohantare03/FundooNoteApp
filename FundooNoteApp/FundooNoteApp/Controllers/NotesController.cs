@@ -32,8 +32,10 @@ namespace FundooNoteApp.Controllers
                 {
                     return Ok(new { success = true, message = "Notes Created Successful", data = result });
                 }
-
-                return BadRequest(new { success = false, message = "Notes not Created" });
+                else
+                {
+                    return BadRequest(new { success = false, message = "Notes not Created" });
+                }              
             }
             catch (Exception)
             {
@@ -51,11 +53,11 @@ namespace FundooNoteApp.Controllers
                 var result = iNotesBL.UpdateNote(notesModel, NoteId);
                 if (result != null)
                 {
-                    return this.Ok(new { Success = true, message = "Notes Updated Successfully", data = result });
+                    return Ok(new { Success = true, message = "Notes Updated Successfully", data = result });
                 }
                 else
                 {
-                    return this.BadRequest(new { Success = false, message = "Notes Update Unsuccessful" });
+                    return BadRequest(new { Success = false, message = "Notes Update Unsuccessful" });
                 }
             }
             catch (Exception)
@@ -74,11 +76,11 @@ namespace FundooNoteApp.Controllers
                 var delete = iNotesBL.DeleteNotes(NoteId);
                 if (delete != null)
                 {
-                    return this.Ok(new { Success = true, message = "Notes Deleted Successfully" });
+                    return Ok(new { Success = true, message = "Notes Deleted Successfully" });
                 }
                 else
                 {
-                    return this.BadRequest(new { Success = false, message = "Notes Delete Unsuccessful" });
+                    return BadRequest(new { Success = false, message = "Notes Delete Unsuccessful" });
                 }
             }
             catch (Exception)
@@ -97,11 +99,11 @@ namespace FundooNoteApp.Controllers
                 var result = iNotesBL.ReadNotes(userId);
                 if (result != null)
                 {
-                    return this.Ok(new { Success = true, message = "Notes Updated Successfully", data = result });
+                    return Ok(new { Success = true, message = "Notes Updated Successfully", data = result });
                 }
                 else
                 {
-                    return this.BadRequest(new { Success = false, message = "Notes Update Unsuccessful" });
+                    return BadRequest(new { Success = false, message = "Notes Update Unsuccessful" });
                 }
             }
             catch (Exception)
@@ -197,6 +199,29 @@ namespace FundooNoteApp.Controllers
                 else
                 {
                     return BadRequest(new { Success = false, message = " Color Add Unsuccessful" });
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPut]
+        [Route("Image")]
+        public IActionResult AddImage(long noteId, IFormFile image)
+        {
+            try
+            {
+                long userID = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userID").Value);
+                var result = iNotesBL.AddImage(noteId, userID, image);
+                if (result != null)
+                {
+                    return Ok(new { Status = true, Message = "Image Uploaded Successfully", Data = result });
+                }
+                else
+                {
+                    return BadRequest(new { Status = true, Message = "Image Uploaded Unsuccessful", Data = result });
                 }
             }
             catch (Exception)

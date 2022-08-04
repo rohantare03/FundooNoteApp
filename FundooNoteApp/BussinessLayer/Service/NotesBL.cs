@@ -1,5 +1,6 @@
 ﻿using BussinessLayer.Interface;
 using CommonLayer.Modal;
+using Microsoft.AspNetCore.Http;
 using RepositoryLayer.Entity;
 using RepositoryLayer.Interface;
 using System;
@@ -99,6 +100,17 @@ namespace BussinessLayer.Service
             try
             {
                 return iNotesRL.NoteColor(NoteId, color);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public string AddImage(long NoteID, long userId, IFormFile image)
+        {
+            try
+            {
+                return iNotesRL.AddImage(NoteID, userId, image);
             }
             catch (Exception)
             {
