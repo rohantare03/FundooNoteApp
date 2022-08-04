@@ -64,7 +64,7 @@ namespace FundooNoteApp.Controllers
             }
         }
 
-         [HttpDelete]
+        [HttpDelete]
         [Route("Delete")]
         public IActionResult DeleteNotes(long NoteId)
         {
@@ -103,6 +103,30 @@ namespace FundooNoteApp.Controllers
                 {
                     return this.BadRequest(new { Success = false, message = "Notes Update Unsuccessful" });
                 }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPut]
+        [Route("Pin")]
+        public IActionResult Pinned(long NoteID)
+        {
+            try
+            {
+                long userID = Convert.ToInt32(User.Claims.FirstOrDefault(r => r.Type == "userID").Value);
+                var result = iNotesBL.Pinned(NoteID, userID);
+                if (result == true)
+                {
+                    return Ok(new { success = true, message = "Note Pinned Successfully" });
+                }
+                else if (result == false)
+                {
+                    return Ok(new { success = true, message = "Note Unpinned successfully." });
+                }
+                return BadRequest(new { success = false, message = "Cannot perform operation." });
             }
             catch (Exception)
             {
