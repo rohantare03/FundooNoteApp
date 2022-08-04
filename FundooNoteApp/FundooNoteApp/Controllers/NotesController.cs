@@ -181,5 +181,28 @@ namespace FundooNoteApp.Controllers
                 throw;
             }
         }
+
+        [HttpPut]
+        [Route("Color")]
+        public IActionResult NoteColor(long NoteId, string color)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(r => r.Type == "userID").Value);
+                var colors = iNotesBL.NoteColor(NoteId, color);
+                if (colors != null)
+                {
+                    return Ok(new { Success = true, message = "Color Added Successfully", data = colors });
+                }
+                else
+                {
+                    return BadRequest(new { Success = false, message = " Color Add Unsuccessful" });
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
