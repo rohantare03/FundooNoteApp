@@ -221,7 +221,7 @@ namespace FundooNoteApp.Controllers
                 }
                 else
                 {
-                    return BadRequest(new { Status = true, Message = "Image Uploaded Unsuccessful", Data = result });
+                    return BadRequest(new { Status = true, Message = "Image Upload Unsuccessful" });
                 }
             }
             catch (Exception)
