@@ -133,5 +133,29 @@ namespace FundooNoteApp.Controllers
                 throw;
             }
         }
+
+        [HttpPut]
+        [Route("Archive")]
+        public IActionResult Archive(long NoteID)
+        {
+            try
+            {
+                long userID = Convert.ToInt32(User.Claims.FirstOrDefault(r => r.Type == "userID").Value);
+                var result = iNotesBL.Archive(NoteID, userID);
+                if (result == true)
+                {
+                    return Ok(new { success = true, message = "Note Archived successfully" });
+                }
+                else if (result == false)
+                {
+                    return Ok(new { success = true, message = "Note UnArchived successfully" });
+                }
+                return BadRequest(new { success = false, message = "Cannot perform operation" });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

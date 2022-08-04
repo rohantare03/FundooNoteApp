@@ -13,5 +13,6 @@ namespace RepositoryLayer.Interface
         public NotesEntity DeleteNotes(long NoteId);
         public IEnumerable<NotesEntity> ReadNotes(long userId);
         public bool Pinned(long NoteID, long userId);
+        public bool Archive(long NoteID, long userId);
     }
 }
