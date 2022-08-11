@@ -30,7 +30,7 @@ namespace RepositoryLayer.Service
                 userEntity.FirstName = userRegistrationModel.FirstName;
                 userEntity.LastName = userRegistrationModel.LastName;
                 userEntity.Email = userRegistrationModel.Email;
-                userEntity.Password = userRegistrationModel.Password;
+                userEntity.Password = ConvertToEncrypt(userRegistrationModel.Password);
 
                 fundooContext.UserTable.Add(userEntity);
                 int result = fundooContext.SaveChanges();
@@ -44,7 +44,7 @@ namespace RepositoryLayer.Service
                     return null;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }          
@@ -53,7 +53,7 @@ namespace RepositoryLayer.Service
         {
             try
             {
-                var LoginResult = fundooContext.UserTable.Where(r => r.Email == userLoginModel.Email && r.Password == userLoginModel.Password).FirstOrDefault();
+                var LoginResult = fundooContext.UserTable.Where(r => r.Email == userLoginModel.Email && r.Password == ConvertToDecrypt(userLoginModel.Password)).FirstOrDefault();
 
                 if (LoginResult != null)
                 {
@@ -66,7 +66,7 @@ namespace RepositoryLayer.Service
                     return null;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
                 throw;
@@ -137,6 +137,25 @@ namespace RepositoryLayer.Service
             {
                 throw;
             }
+        }
+
+        string Key = "abc@xyz@123@";
+        public string ConvertToEncrypt(string password)
+        {
+
+            if (string.IsNullOrEmpty(password)) return "";
+            password += Key;
+            var passwordBytes = Encoding.UTF8.GetBytes(password);
+            return Convert.ToBase64String(passwordBytes);
+        }
+
+        public string ConvertToDecrypt(string base64EncodeData)
+        {
+            if (string.IsNullOrEmpty(base64EncodeData)) return "";
+            var base64EncodeBytes = Convert.FromBase64String(base64EncodeData);
+            var result = Encoding.UTF8.GetString(base64EncodeBytes);
+            result = result.Substring(0, result.Length - Key.Length);
+            return result;
         }
     }
 }
