@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entity;
@@ -22,17 +23,18 @@ namespace FundooNoteApp.Controllers
     public class NotesController : ControllerBase
     {
         private readonly INotesBL iNotesBL;
-
         private readonly IMemoryCache memoryCache;
         private readonly IDistributedCache distributedCache;
         private readonly FundooContext fundooContext;
+        private readonly ILogger<NotesController> logger;
 
-        public NotesController(INotesBL iNotesBL, IMemoryCache memoryCache, IDistributedCache distributedCache, FundooContext fundooContext)
+        public NotesController(INotesBL iNotesBL, IMemoryCache memoryCache, IDistributedCache distributedCache, FundooContext fundooContext, ILogger<NotesController> logger)
         {
             this.iNotesBL = iNotesBL;
             this.memoryCache = memoryCache;
             this.distributedCache = distributedCache;
             this.fundooContext = fundooContext;
+            this.logger = logger;
         }
 
         [HttpPost]
@@ -45,15 +47,45 @@ namespace FundooNoteApp.Controllers
                 var result = iNotesBL.AddNotes(noteData, userId);
                 if (result != null)
                 {
-                    return Ok(new { success = true, message = "Notes Created Successful", data = result });
+                    logger.LogInformation("Notes Created Successfully ");
+                    return Ok(new { success = true, message = "Notes Created Successfully", data = result });
                 }
                 else
                 {
+                    logger.LogError("Notes Not Created");
                     return BadRequest(new { success = false, message = "Notes not Created" });
-                }              
+                }
             }
             catch (Exception)
             {
+                logger.LogError(ToString());
+                throw;
+            }
+        }
+
+
+        [HttpDelete]
+        [Route("Delete")]
+        public IActionResult DeleteNotes(long NoteId)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(r => r.Type == "userID").Value);
+                var delete = iNotesBL.DeleteNotes(NoteId);
+                if (delete != null)
+                {
+                    logger.LogInformation("Notes Deleted Successfully ");
+                    return this.Ok(new { Success = true, message = "Notes Deleted Successfully" });
+                }
+                else
+                {
+                    logger.LogError("Notes Delete Unsuccessful");
+                    return this.BadRequest(new { Success = false, message = "Notes Delete Unsuccessful" });
+                }
+            }
+            catch (Exception)
+            {
+                logger.LogError(ToString());
                 throw;
             }
         }
@@ -68,38 +100,18 @@ namespace FundooNoteApp.Controllers
                 var result = iNotesBL.UpdateNote(notesModel, NoteId);
                 if (result != null)
                 {
-                    return Ok(new { Success = true, message = "Notes Updated Successfully", data = result });
+                    logger.LogInformation("Notes Updated Successfully ");
+                    return this.Ok(new { Success = true, message = "Notes Updated Successfully", data = result });
                 }
                 else
                 {
-                    return BadRequest(new { Success = false, message = "Notes Update Unsuccessful" });
+                    logger.LogError("Notes Update Unsuccessful");
+                    return this.BadRequest(new { Success = false, message = "Notes Update Unsuccessful" });
                 }
             }
             catch (Exception)
             {
-                throw;
-            }
-        }
-
-        [HttpDelete]
-        [Route("Delete")]
-        public IActionResult DeleteNotes(long NoteId)
-        {
-            try
-            {
-                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(r => r.Type == "userID").Value);
-                var delete = iNotesBL.DeleteNotes(NoteId);
-                if (delete != null)
-                {
-                    return Ok(new { Success = true, message = "Notes Deleted Successfully" });
-                }
-                else
-                {
-                    return BadRequest(new { Success = false, message = "Notes Delete Unsuccessful" });
-                }
-            }
-            catch (Exception)
-            {
+                logger.LogError(ToString());
                 throw;
             }
         }
@@ -114,15 +126,18 @@ namespace FundooNoteApp.Controllers
                 var result = iNotesBL.ReadNotes(userId);
                 if (result != null)
                 {
-                    return Ok(new { Success = true, message = "Notes Updated Successfully", data = result });
+                    logger.LogInformation("Notes Retrieved Successfully ");
+                    return this.Ok(new { Success = true, message = "Notes Retrieved Successfully", data = result });
                 }
                 else
                 {
-                    return BadRequest(new { Success = false, message = "Notes Update Unsuccessful" });
+                    logger.LogError("Notes Retrieve Unsuccessful");
+                    return this.BadRequest(new { Success = false, message = "Notes Retrieve Unsuccessful" });
                 }
             }
             catch (Exception)
             {
+                logger.LogError(ToString());
                 throw;
             }
         }
@@ -137,16 +152,23 @@ namespace FundooNoteApp.Controllers
                 var result = iNotesBL.Pinned(NoteID, userID);
                 if (result == true)
                 {
+                    logger.LogInformation("Note Pinned Successfully ");
                     return Ok(new { success = true, message = "Note Pinned Successfully" });
                 }
                 else if (result == false)
                 {
-                    return Ok(new { success = true, message = "Note Unpinned successfully." });
+                    logger.LogInformation("Note Unpinned successfully ");
+                    return Ok(new { success = true, message = "Note Unpinned successfully" });
                 }
-                return BadRequest(new { success = false, message = "Cannot perform operation." });
+                else
+                {
+                    logger.LogError("Cannot perform operation");
+                    return BadRequest(new { success = false, message = "Cannot perform operation." });
+                }
             }
             catch (Exception)
             {
+                logger.LogError(ToString());
                 throw;
             }
         }
@@ -161,16 +183,23 @@ namespace FundooNoteApp.Controllers
                 var result = iNotesBL.Archive(NoteID, userID);
                 if (result == true)
                 {
+                    logger.LogInformation("Note Archived successfully ");
                     return Ok(new { success = true, message = "Note Archived successfully" });
                 }
                 else if (result == false)
                 {
+                    logger.LogInformation("Note UnArchived successfully");
                     return Ok(new { success = true, message = "Note UnArchived successfully" });
                 }
-                return BadRequest(new { success = false, message = "Cannot perform operation" });
+                else
+                {
+                    logger.LogError("Cannot perform operation");
+                    return BadRequest(new { success = false, message = "Cannot perform operation" });
+                }
             }
             catch (Exception)
             {
+                logger.LogError(ToString());
                 throw;
             }
         }
@@ -185,16 +214,23 @@ namespace FundooNoteApp.Controllers
                 var result = iNotesBL.Trash(NoteID, userID);
                 if (result == true)
                 {
-                    return Ok(new { success = true, message = "Note Trashed successfully" });
+                    logger.LogInformation("Note Trashed Successfully ");
+                    return Ok(new { success = true, message = "Note Trashed Successfully" });
                 }
                 else if (result == false)
                 {
-                    return Ok(new { success = true, message = "Note UnTrashed successfully" });
+                    logger.LogInformation("Note UnTrashed Successfully ");
+                    return Ok(new { success = true, message = "Note UnTrashed Successfully" });
                 }
-                return BadRequest(new { success = false, message = "Cannot perform operation" });
+                else
+                {
+                    logger.LogError("Cannot perform operation");
+                    return BadRequest(new { success = false, message = "Cannot perform operation" });
+                }
             }
             catch (Exception)
             {
+                logger.LogError(ToString());
                 throw;
             }
         }
@@ -209,15 +245,18 @@ namespace FundooNoteApp.Controllers
                 var colors = iNotesBL.NoteColor(NoteId, color);
                 if (colors != null)
                 {
-                    return Ok(new { Success = true, message = "Color Added Successfully", data = colors });
+                    logger.LogInformation("Color Added Successfully ");
+                    return this.Ok(new { Success = true, message = "Color Added Successfully", data = colors });
                 }
                 else
                 {
-                    return BadRequest(new { Success = false, message = " Color Add Unsuccessful" });
+                    logger.LogError("Color Add Unsuccessful");
+                    return this.BadRequest(new { Success = false, message = " Color Add Unsuccessful" });
                 }
             }
             catch (Exception)
             {
+                logger.LogError(ToString());
                 throw;
             }
         }
@@ -228,19 +267,22 @@ namespace FundooNoteApp.Controllers
         {
             try
             {
-                long userID = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "userID").Value);
+                long userID = Convert.ToInt32(User.Claims.FirstOrDefault(r => r.Type == "userID").Value);
                 var result = iNotesBL.AddImage(noteId, userID, image);
                 if (result != null)
                 {
-                    return Ok(new { Status = true, Message = "Image Uploaded Successfully", Data = result });
+                    logger.LogInformation("Image Uploaded Successfully ");
+                    return this.Ok(new { Success = true, Message = "Image Uploaded Successfully" });
                 }
                 else
                 {
-                    return BadRequest(new { Status = true, Message = "Image Upload Unsuccessful" });
+                    logger.LogError("Image Upload Unsuccessful");
+                    return this.BadRequest(new { Success = true, Message = "Image Upload Unsuccessful" });
                 }
             }
             catch (Exception)
             {
+                logger.LogError(ToString());
                 throw;
             }
         }

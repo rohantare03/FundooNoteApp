@@ -3,6 +3,7 @@ using CommonLayer.Modal;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using RepositoryLayer.Context;
 using System.Security.Claims;
 
@@ -13,10 +14,14 @@ namespace FundooNoteApp.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserBL iuserBL;
-        public UserController(IUserBL iuserBL)
+        private readonly ILogger<UserController> logger;
+        public UserController(IUserBL iuserBL, ILogger<UserController> logger)
         {
             this.iuserBL = iuserBL;
+            this.logger = logger;
         }
+
+
         [HttpPost]
         [Route("Register")]
         public IActionResult RegisterUser(UserRegistrationModel userRegistrationModel)
@@ -25,20 +30,24 @@ namespace FundooNoteApp.Controllers
             {
                 var result = iuserBL.Registration(userRegistrationModel);
 
-                if(result != null)
+                if (result != null)
                 {
+                    logger.LogInformation("Registeration Sucessfull");
                     return Ok(new { success = true, message = "Registration Successful", data = result });
                 }
                 else
                 {
+                    logger.LogError("Registeration Unsuccessfull");
                     return BadRequest(new { success = false, message = "Registration Unsuccessful" });
                 }
             }
             catch (System.Exception)
             {
+                logger.LogError(ToString());
                 throw;
             }
         }
+
         [HttpPost]
         [Route("Login")]
         public IActionResult LoginUser(UserLoginModel userLoginModel)
@@ -49,15 +58,18 @@ namespace FundooNoteApp.Controllers
 
                 if (result != null)
                 {
+                    logger.LogInformation("Login Sucessfull");
                     return Ok(new { success = true, message = "Login Successful", data = result });
                 }
                 else
                 {
+                    logger.LogError("Registeration Unsuccessfull");
                     return BadRequest(new { success = false, message = "Login Unsuccessful" });
                 }
             }
             catch (System.Exception)
             {
+                logger.LogError(ToString());
                 throw;
             }
         }
@@ -72,15 +84,18 @@ namespace FundooNoteApp.Controllers
 
                 if (result != null)
                 {
+                    logger.LogInformation("Email sent Successful");
                     return Ok(new { success = true, message = "Email sent Successful" });
                 }
                 else
                 {
+                    logger.LogError("Reset Email not send");
                     return BadRequest(new { success = false, message = "Reset Email not send" });
                 }
             }
             catch (System.Exception)
             {
+                logger.LogError(ToString());
                 throw;
             }
         }
@@ -97,15 +112,18 @@ namespace FundooNoteApp.Controllers
 
                 if (result != null)
                 {
+                    logger.LogInformation("Password Reset Successful");
                     return Ok(new { success = true, message = "Password Reset Successful" });
                 }
                 else
                 {
+                    logger.LogError("Password Reset Unsuccessful");
                     return BadRequest(new { success = false, message = "Password Reset Unsuccessful" });
                 }
             }
             catch (System.Exception)
             {
+                logger.LogError(ToString());
                 throw;
             }
         }

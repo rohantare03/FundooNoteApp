@@ -21,7 +21,7 @@ namespace BussinessLayer.Service
             {
                 return iuserRL.Registration(userRegistrationModel);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }  
@@ -33,7 +33,7 @@ namespace BussinessLayer.Service
                 return iuserRL.Login(userLoginModel);
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -46,7 +46,7 @@ namespace BussinessLayer.Service
                 return iuserRL.ForgetPassword(Email);
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
