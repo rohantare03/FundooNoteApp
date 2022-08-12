@@ -22,6 +22,12 @@ namespace RepositoryLayer.Service
             this.fundooContext = fundooContext;
             this.Config = Config;
         }
+
+        /// <summary>
+        /// Registers the specified user.
+        /// </summary>
+        /// <param name="userRegistrationModel">The user registration model.</param>
+        /// <returns></returns>
         public UserEntity Registration(UserRegistrationModel userRegistrationModel)
         {
             try
@@ -49,6 +55,12 @@ namespace RepositoryLayer.Service
                 throw;
             }          
         }
+
+        /// <summary>
+        /// Logins the specified user.
+        /// </summary>
+        /// <param name="userLoginModel">The user login model.</param>
+        /// <returns></returns>
         public string Login(UserLoginModel userLoginModel)
         {
             try
@@ -72,6 +84,13 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
+
+        /// <summary>
+        /// Generates the security token.
+        /// </summary>
+        /// <param name="email">The email.</param>
+        /// <param name="userID">The user identifier.</param>
+        /// <returns></returns>
         public string GenerateSecurityToken(string email, long userID)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -92,6 +111,12 @@ namespace RepositoryLayer.Service
             return tokenHandler.WriteToken(token);
 
         }
+
+        /// <summary>
+        /// Forgets the password.
+        /// </summary>
+        /// <param name="Email">The email.</param>
+        /// <returns></returns>
         public string ForgetPassword(string Email)
         {
             try
@@ -116,6 +141,14 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
+
+        /// <summary>
+        /// Resets the Password.
+        /// </summary>
+        /// <param name="email">The email.</param>
+        /// <param name="password">The password.</param>
+        /// <param name="confirmPassword">The confirm password.</param>
+        /// <returns></returns>
         public bool ResetLink(string email, string password, string confirmPassword)
         {
             try
@@ -140,6 +173,12 @@ namespace RepositoryLayer.Service
         }
 
         string Key = "abc@xyz@123@";
+
+        /// <summary>
+        /// Encrypt the Password.
+        /// </summary>
+        /// <param name="password">The password.</param>
+        /// <returns></returns>
         public string ConvertToEncrypt(string password)
         {
 
@@ -149,6 +188,11 @@ namespace RepositoryLayer.Service
             return Convert.ToBase64String(passwordBytes);
         }
 
+        /// <summary>
+        /// Decrypt the Password.
+        /// </summary>
+        /// <param name="base64EncodeData">The base64 encode data.</param>
+        /// <returns></returns>
         public string ConvertToDecrypt(string base64EncodeData)
         {
             if (string.IsNullOrEmpty(base64EncodeData)) return "";

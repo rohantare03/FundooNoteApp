@@ -38,6 +38,11 @@ namespace FundooNoteApp.Controllers
 
         }
 
+        /// <summary>
+        /// Creates the label.
+        /// </summary>
+        /// <param name="labelModel">The label model.</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Create")]
         public IActionResult CreateLabel(LabelModel labelModel)
@@ -73,6 +78,12 @@ namespace FundooNoteApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates the label.
+        /// </summary>
+        /// <param name="labelModel">The label model.</param>
+        /// <param name="labelID">The label identifier.</param>
+        /// <returns></returns>
         [HttpPut]
         [Route("Update")]
         public IActionResult UpdateLabel(LabelModel labelModel, long labelID)
@@ -99,6 +110,11 @@ namespace FundooNoteApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes the label.
+        /// </summary>
+        /// <param name="labelID">The label identifier.</param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("Delete")]
         public IActionResult DeleteLabel(long labelID)
@@ -125,6 +141,11 @@ namespace FundooNoteApp.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Gets all labels.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("Retrieve")]
         public IActionResult GetAllLabels()
@@ -151,6 +172,10 @@ namespace FundooNoteApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets all labels using redis cache.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("redis")]
         public async Task<IActionResult> GetAllLabelsUsingRedisCache()

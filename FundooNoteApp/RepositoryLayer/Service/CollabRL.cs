@@ -17,6 +17,12 @@ namespace RepositoryLayer.Service
         {
             this.fundooContext = fundooContext;
         }
+
+        /// <summary>
+        /// Adds the collab.
+        /// </summary>
+        /// <param name="collabModel">The collab model.</param>
+        /// <returns></returns>
         public CollaboratorEntity AddCollab(CollabModel collabModel)
         {
             try
@@ -46,6 +52,13 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
+
+        /// <summary>
+        /// Removes the collab.
+        /// </summary>
+        /// <param name="collabID">The collab identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
         public string RemoveCollab(long collabID, long userId)
         {
             var collab = fundooContext.CollaboratorTable.Where(r => r.CollabID == collabID).FirstOrDefault();
@@ -60,6 +73,13 @@ namespace RepositoryLayer.Service
                 return null;
             }
         }
+
+        /// <summary>
+        /// Gets the collab.
+        /// </summary>
+        /// <param name="noteId">The note identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
         public IEnumerable<CollaboratorEntity> GetCollab(long noteId, long userId)
         {
             try

@@ -15,6 +15,12 @@ namespace BussinessLayer.Service
         {
             this.collabRL = collabRL;
         }
+
+        /// <summary>
+        /// Adds the collab.
+        /// </summary>
+        /// <param name="collabModel">The collab model.</param>
+        /// <returns></returns>
         public CollaboratorEntity AddCollab(CollabModel collabModel)
         {
             try
@@ -27,6 +33,13 @@ namespace BussinessLayer.Service
                 throw;
             }
         }
+
+        /// <summary>
+        /// Removes the collab.
+        /// </summary>
+        /// <param name="collabID">The collab identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
         public string RemoveCollab(long collabID, long userId)
         {
             try
@@ -38,6 +51,13 @@ namespace BussinessLayer.Service
                 throw;
             }
         }
+
+        /// <summary>
+        /// Gets the collab.
+        /// </summary>
+        /// <param name="noteId">The note identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
         public IEnumerable<CollaboratorEntity> GetCollab(long noteId, long userId)
         {
             try

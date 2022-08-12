@@ -37,6 +37,11 @@ namespace FundooNoteApp.Controllers
             this.logger = logger;
         }
 
+        /// <summary>
+        /// Adds the Collab.
+        /// </summary>
+        /// <param name="collabModel"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Create")]
         public IActionResult AddCollab(CollabModel collabModel)
@@ -72,6 +77,11 @@ namespace FundooNoteApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes the Collab.
+        /// </summary>
+        /// <param name="collabID"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("Delete")]
         public IActionResult RemoveCollab(long collabID)
@@ -98,6 +108,11 @@ namespace FundooNoteApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves the Collab.
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("Retrieve")]
         public IActionResult GetCollab(long noteId)
@@ -124,6 +139,11 @@ namespace FundooNoteApp.Controllers
                 throw;
             }
         }
+
+        /// <summary>
+        ///  Retrieves the Collab using Redis Cache.
+        /// </summary>
+        /// <returns></returns>
 
         [HttpGet]
         [Route("Redis")]

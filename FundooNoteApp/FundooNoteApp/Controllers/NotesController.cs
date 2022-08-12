@@ -37,6 +37,11 @@ namespace FundooNoteApp.Controllers
             this.logger = logger;
         }
 
+        /// <summary>
+        /// Creates the note.
+        /// </summary>
+        /// <param name="noteData">The note data.</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Create")]
         public IActionResult CreateNote(NotesModel noteData)
@@ -63,7 +68,11 @@ namespace FundooNoteApp.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Deletes the notes.
+        /// </summary>
+        /// <param name="NoteId">The note identifier.</param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("Delete")]
         public IActionResult DeleteNotes(long NoteId)
@@ -90,6 +99,12 @@ namespace FundooNoteApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates the notes.
+        /// </summary>
+        /// <param name="notesModel">The notes model.</param>
+        /// <param name="NoteId">The note identifier.</param>
+        /// <returns></returns>
         [HttpPut]
         [Route("Update")]
         public IActionResult UpdateNotes(NotesModel notesModel, long NoteId)
@@ -116,6 +131,10 @@ namespace FundooNoteApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves the notes.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("Retrieve")]
         public IActionResult ReadNotes()
@@ -142,6 +161,12 @@ namespace FundooNoteApp.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Pin and Unpin the specified note identifier.
+        /// </summary>
+        /// <param name="NoteID">The note identifier.</param>
+        /// <returns></returns>
         [HttpPut]
         [Route("Pin")]
         public IActionResult Pinned(long NoteID)
@@ -173,6 +198,11 @@ namespace FundooNoteApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Archives and Unarchives the specified note identifier.
+        /// </summary>
+        /// <param name="NoteID">The note identifier.</param>
+        /// <returns></returns>
         [HttpPut]
         [Route("Archive")]
         public IActionResult Archive(long NoteID)
@@ -204,6 +234,12 @@ namespace FundooNoteApp.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Trash and Untrash the specified note identifier.
+        /// </summary>
+        /// <param name="NoteID">The note identifier.</param>
+        /// <returns></returns>
         [HttpPut]
         [Route("Trash")]
         public IActionResult Trash(long NoteID)
@@ -235,6 +271,12 @@ namespace FundooNoteApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Change Notes color.
+        /// </summary>
+        /// <param name="NoteId">The note identifier.</param>
+        /// <param name="color">The color.</param>
+        /// <returns></returns>
         [HttpPut]
         [Route("Color")]
         public IActionResult NoteColor(long NoteId, string color)
@@ -261,7 +303,13 @@ namespace FundooNoteApp.Controllers
             }
         }
 
-        [HttpPut]
+        /// <summary>
+        /// Adds the image.
+        /// </summary>
+        /// <param name="noteId">The note identifier.</param>
+        /// <param name="image">The image.</param>
+        /// <returns></returns>
+/        [HttpPut]
         [Route("Image")]
         public IActionResult AddImage(long noteId, IFormFile image)
         {
@@ -287,6 +335,10 @@ namespace FundooNoteApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets all notes using redis cache.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("Redis")]
         public async Task<IActionResult> GetAllNotesUsingRedisCache()

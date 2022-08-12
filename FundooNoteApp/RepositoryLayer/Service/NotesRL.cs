@@ -22,6 +22,13 @@ namespace RepositoryLayer.Service
             this.fundooContext = fundooContext;
             this.configuration = configuration;
         }
+
+        /// <summary>
+        /// Adds the notes.
+        /// </summary>
+        /// <param name="notesModel">The notes model.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
         public NotesEntity AddNotes(NotesModel notesModel, long userId)
         {
             try
@@ -55,6 +62,13 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
+
+        /// <summary>
+        /// Updates the note.
+        /// </summary>
+        /// <param name="notesModel">The notes model.</param>
+        /// <param name="NoteId">The note identifier.</param>
+        /// <returns></returns>
         public NotesEntity UpdateNote(NotesModel notesModel, long NoteId)
         {
             try
@@ -84,6 +98,12 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
+
+        /// <summary>
+        /// Deletes the notes.
+        /// </summary>
+        /// <param name="NoteId">The note identifier.</param>
+        /// <returns></returns>
         public NotesEntity DeleteNotes(long NoteId)
         {
             try
@@ -106,6 +126,12 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
+
+        /// <summary>
+        /// Retrieve the notes.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
         public IEnumerable<NotesEntity> ReadNotes(long userId)
         {
             try
@@ -118,6 +144,13 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
+
+        /// <summary>
+        /// Pin and Unpin the specified note identifier.
+        /// </summary>
+        /// <param name="NoteID">The note identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
         public bool Pinned(long NoteID, long userId)
         {
             try
@@ -143,6 +176,13 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
+
+        /// <summary>
+        /// Archive and Unarchive the specified note identifier.
+        /// </summary>
+        /// <param name="NoteID">The note identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
         public bool Archive(long NoteID, long userId)
         {
             try
@@ -167,6 +207,13 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
+
+        /// <summary>
+        /// Trash and Untrash the specified note identifier.
+        /// </summary>
+        /// <param name="NoteID">The note identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
         public bool Trash(long NoteID, long userId)
         {
             try
@@ -191,28 +238,50 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
+
+        /// <summary>
+        /// Change Notes color.
+        /// </summary>
+        /// <param name="NoteId">The note identifier.</param>
+        /// <param name="color">The color.</param>
+        /// <returns></returns>
         public NotesEntity NoteColor(long NoteId, string color)
         {
             var result = fundooContext.NotesTable.Where(r => r.NoteID == NoteId).FirstOrDefault();
-            if (result != null)
+            try
             {
-                if (color != null)
+                if (result != null)
                 {
-                    result.Color = color;
-                    fundooContext.NotesTable.Update(result);
-                    fundooContext.SaveChanges();
-                    return result;
+                    if (color != null)
+                    {
+                        result.Color = color;
+                        fundooContext.NotesTable.Update(result);
+                        fundooContext.SaveChanges();
+                        return result;
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
                 else
                 {
                     return null;
                 }
             }
-            else
+            catch (Exception)
             {
-                return null;
+                throw;
             }
         }
+
+        /// <summary>
+        /// Adds the image.
+        /// </summary>
+        /// <param name="NoteID">The note identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="image">The image.</param>
+        /// <returns></returns>
         public string AddImage(long NoteID, long userId, IFormFile image)
         {
             try
@@ -238,9 +307,9 @@ namespace RepositoryLayer.Service
                     return null;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw new Exception(ex.Message);
+                throw;
             }
         }
     }

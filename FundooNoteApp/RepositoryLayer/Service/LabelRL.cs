@@ -16,6 +16,12 @@ namespace RepositoryLayer.Service
         {
             this.fundooContext = fundooContext;
         }
+
+        /// <summary>
+        /// Creates the label.
+        /// </summary>
+        /// <param name="labelModel">The label model.</param>
+        /// <returns></returns>
         public LabelEntity CreateLabel(LabelModel labelModel)
         {
             try
@@ -42,6 +48,13 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
+
+        /// <summary>
+        /// Updates the label.
+        /// </summary>
+        /// <param name="labelModel">The label model.</param>
+        /// <param name="labelID">The label identifier.</param>
+        /// <returns></returns>
         public LabelEntity UpdateLabel(LabelModel labelModel, long labelID)
         {
             try
@@ -65,6 +78,13 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
+
+        /// <summary>
+        /// Deletes the label.
+        /// </summary>
+        /// <param name="labelID">The label identifier.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
         public LabelEntity DeleteLabel(long labelID, long userId)
         {
             try
@@ -86,6 +106,12 @@ namespace RepositoryLayer.Service
                 throw;
             }
         }
+
+        /// <summary>
+        /// Gets the labels.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
         public IEnumerable<LabelEntity> GetLabels(long userId)
         {
             try

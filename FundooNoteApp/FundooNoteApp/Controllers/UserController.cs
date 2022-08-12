@@ -21,7 +21,11 @@ namespace FundooNoteApp.Controllers
             this.logger = logger;
         }
 
-
+        /// <summary>
+        /// Registers the user.
+        /// </summary>
+        /// <param name="userRegistrationModel">The user registration model.</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Register")]
         public IActionResult RegisterUser(UserRegistrationModel userRegistrationModel)
@@ -47,7 +51,11 @@ namespace FundooNoteApp.Controllers
                 throw;
             }
         }
-
+        /// <summary>
+        /// Logins the user.
+        /// </summary>
+        /// <param name="userLoginModel">The user login model.</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Login")]
         public IActionResult LoginUser(UserLoginModel userLoginModel)
@@ -74,6 +82,11 @@ namespace FundooNoteApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Forgets the password.
+        /// </summary>
+        /// <param name="Email">The email.</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("ForgetPassword")]
         public IActionResult ForgetPassword(string Email)
@@ -100,6 +113,12 @@ namespace FundooNoteApp.Controllers
             }
         }
 
+        /// <summary>
+        /// Resets the link.
+        /// </summary>
+        /// <param name="password">The password.</param>
+        /// <param name="confirmPassword">The confirm password.</param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
         [Route("ResetLink")]
